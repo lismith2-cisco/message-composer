@@ -61,7 +61,7 @@ class Composer extends React.Component {
   }
 
   componentDidMount() {
-    const {draft, emitter, keyBindings, placeholder} = this.props;
+    const {draft, emitter, keyBindings, placeholder, mentionListLabel} = this.props;
 
     try {
       emitter.on('INSERT_TEXT', this.insert);
@@ -124,6 +124,12 @@ class Composer extends React.Component {
         ],
         placeholder,
       });
+
+      if (mentionListLabel) {
+        this.quill.getModule('mention').mentionContainer.setAttribute('aria-label', mentionListLabel);
+      }
+      this.quill.getModule('mention').mentionContainer.setAttribute('role', 'listbox');
+      this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'false');
 
       // inserts the initial text to the composer
       // may contain formats as html tags, so convert those to markdowns
@@ -363,6 +369,8 @@ class Composer extends React.Component {
   handleMentionOpen() {
     const {onMentionOpen} = this.props;
 
+    this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'true');
+
     if (onMentionOpen) {
       onMentionOpen();
     }
@@ -370,6 +378,8 @@ class Composer extends React.Component {
 
   handleMentionClose() {
     const {onMentionClose} = this.props;
+
+    this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'false');
 
     if (onMentionClose) {
       onMentionClose();
@@ -475,6 +485,7 @@ Composer.propTypes = {
   markdown: PropTypes.shape({
     disabled: PropTypes.bool,
   }),
+  mentionListLabel: PropTypes.string,
   mentions: PropTypes.shape({
     participants: PropTypes.shape({
       current: PropTypes.array,
@@ -492,6 +503,7 @@ Composer.defaultProps = {
   draft: undefined,
   keyBindings: {},
   markdown: undefined,
+  mentionListLabel: undefined,
   mentions: undefined,
   notifyKeyDown: undefined,
   onMentionClose: undefined,

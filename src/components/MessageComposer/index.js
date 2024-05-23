@@ -11,6 +11,7 @@ import './styles.scss';
 const MessageComposer = ({
   send,
   markdown,
+  mentionListLabel,
   mentions,
   Toolbar,
   children,
@@ -23,7 +24,7 @@ const MessageComposer = ({
   placeholder,
   onError,
   keyBindings,
-  sendButton
+  sendButton,
 }) => {
   const emitter = useRef(new TinyEmitter());
   const [active, setActive] = useState({});
@@ -46,6 +47,7 @@ const MessageComposer = ({
         <QuillComposer
           send={send}
           markdown={markdown}
+          mentionListLabel={mentionListLabel}
           mentions={mentions}
           disabled={disabled}
           draft={draft}
@@ -79,6 +81,7 @@ MessageComposer.propTypes = {
   markdown: PropTypes.shape({
     disabled: PropTypes.bool,
   }),
+  mentionListLabel: PropTypes.string,
   mentions: PropTypes.shape({
     participants: PropTypes.object,
   }),
@@ -99,6 +102,7 @@ MessageComposer.defaultProps = {
   draft: undefined,
   keyBindings: undefined,
   markdown: undefined,
+  mentionListLabel: undefined,
   mentions: undefined,
   notifyKeyDown: null,
   onMentionClose: undefined,
