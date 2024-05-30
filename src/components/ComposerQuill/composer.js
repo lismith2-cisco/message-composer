@@ -48,6 +48,7 @@ class Composer extends React.Component {
     super(props);
 
     this.quill = undefined;
+    this.quillMention = undefined;
     this.insert = this.insert.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -125,11 +126,13 @@ class Composer extends React.Component {
         placeholder,
       });
 
+      this.quillMention = this.quill.getModule('mention');
+
       if (mentionListLabel) {
-        this.quill.getModule('mention').mentionContainer.setAttribute('aria-label', mentionListLabel);
+        this.quillMention.mentionContainer.setAttribute('aria-label', mentionListLabel);
       }
-      this.quill.getModule('mention').mentionContainer.setAttribute('role', 'listbox');
-      this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'false');
+      this.quillMention.mentionContainer.setAttribute('role', 'listbox');
+      this.quillMention.mentionContainer.setAttribute('aria-expanded', 'false');
 
       // inserts the initial text to the composer
       // may contain formats as html tags, so convert those to markdowns
@@ -369,7 +372,7 @@ class Composer extends React.Component {
   handleMentionOpen() {
     const {onMentionOpen} = this.props;
 
-    this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'true');
+    this.quillMention.mentionContainer.setAttribute('aria-expanded', 'true');
 
     if (onMentionOpen) {
       onMentionOpen();
@@ -379,7 +382,7 @@ class Composer extends React.Component {
   handleMentionClose() {
     const {onMentionClose} = this.props;
 
-    this.quill.getModule('mention').mentionContainer.setAttribute('aria-expanded', 'false');
+    this.quillMention.mentionContainer.setAttribute('aria-expanded', 'false');
 
     if (onMentionClose) {
       onMentionClose();
